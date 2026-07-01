@@ -17,21 +17,22 @@ void showMenu() {
     std::cout << "\n========================================\n"
               << "       Huffman Coding System Menu\n"
               << "========================================\n"
-              << "1. Input text manually\n"//请输入文本
-              << "2. Show frequency table\n"//频率表
-              << "3. Show Huffman code table\n"//哈夫曼编码表
-              << "4. Show Huffman tree\n"//哈夫曼树
-              << "5. Encode current text\n"//编码
-              << "6. Decode current code\n"//解码
-              << "7. Show compression analysis\n"//压缩分析
-              << "8. Clear current data\n"//清除
-              << "9. Load text from file\n"//从文件中加载
-              << "10. Save encoded result to file\n"//保存编码结果到文件中
-              << "11. Save decoded result to file\n"//保存解码结果到文件中
-              << "12. Save code table to file\n"//保存编码表到文件中
-              << "13. Save transmission packet\n"//保存压缩报
+              << "1. Input text manually\n"
+              << "2. Show frequency table\n"
+              << "3. Show Huffman code table\n"
+              << "4. Show Huffman tree\n"
+              << "5. Encode current text\n"
+              << "6. Decode current code\n"
+              << "7. Show compression analysis\n"
+              << "8. Clear current data\n"
+              << "9. Load text from file\n"
+              << "10. Save encoded result to file\n"
+              << "11. Save decoded result to file\n"
+              << "12. Save code table to file\n"
+              << "13. Save transmission packet\n"
               << "14. Load transmission packet\n"
               << "15. Decode packet\n"
+              << "16. Show entropy analysis\n"
               << "0. Exit\n"
               << "Enter your choice: ";
 }
@@ -791,6 +792,21 @@ int main() {
                           << std::endl;
                 break;
             }
+
+            case 16:
+                if (hasPacket) {
+                    showEntropyAnalysis(packetFrequencyTable,
+                                        packetCodeTable,
+                                        packetOriginalLength);
+                } else if (hasText) {
+                    showEntropyAnalysis(system.getFreqTable(),
+                                        system.getCodeTable(),
+                                        text.size());
+                } else {
+                    std::cout << "Please input or load message first."
+                              << std::endl;
+                }
+                break;
 
             case 0:
                 running = false;

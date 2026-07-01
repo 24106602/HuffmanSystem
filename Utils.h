@@ -8,11 +8,14 @@
 #include "Node.h"
 
 std::string formatCharacter(char character);
-void showFrequencyTable(const std::map<char, int>& freqTable);///频率表
-void showCodeTable(const std::map<char, std::string>& codeTable);//编码表
-void showTree(const Node* root, int depth = 0);//哈夫曼树
-void showCompression(std::size_t originalBits,//压缩
+void showFrequencyTable(const std::map<char, int>& freqTable);
+void showCodeTable(const std::map<char, std::string>& codeTable);
+void showTree(const Node* root, int depth = 0);
+void showCompression(std::size_t originalBits,
                      std::size_t compressedBits,
                      double compressionRate);
+void showEntropyAnalysis(const std::map<char, int>& freqTable,
+                         const std::map<char, std::string>& codeTable,
+                         std::size_t totalChars);
 
 #endif

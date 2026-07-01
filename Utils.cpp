@@ -1,6 +1,7 @@
 #include "Utils.h"
 
 #include <cctype>
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -119,4 +120,55 @@ void showCompression(std::size_t originalBits,
     std::cout << "Space saving rate: " << savingRate * 100.0 << "%" << std::endl;
     std::cout << "Note: the calculation includes only Huffman-coded data bits, not the code table or file header."
               << std::endl;
+}
+
+void showEntropyAnalysis(const std::map<char, int>& freqTable,
+                         const std::map<char, std::string>& codeTable,
+                         std::size_t totalChars) {
+    if (freqTable.empty() || codeTable.empty() || totalChars == 0) {
+        std::cout << "Please input or load message first." << std::endl;
+        return;
+    }
+
+    double entropy = 0.0;
+    double averageCodeLength = 0.0;
+
+    for (const auto& item : freqTable) {
+        const auto code = codeTable.find(item.first);
+        if (item.second <= 0 || code == codeTable.end()) {
+            std::cout << "Please input or load message first." << std::endl;
+            return;
+        }
+
+        const double probability =
+            static_cast<double>(item.second) /
+            static_cast<double>(totalChars);
+        entropy -= probability * (std::log(probability) / std::log(2.0));
+        averageCodeLength +=
+            probability * static_cast<double>(code->second.size());
+    }
+
+    double efficiency = 0.0;
+    if (averageCodeLength > 0.0) {
+        efficiency = entropy / averageCodeLength * 100.0;
+    }
+    if (efficiency > 100.0 && efficiency < 100.000001) {
+        efficiency = 100.0;
+    }
+
+    const double redundancy = efficiency <= 100.0
+                                  ? 100.0 - efficiency
+                                  : 0.0;
+
+    std::cout << "\n========== Entropy Analysis ==========" << std::endl;
+    std::cout << "Total characters: " << totalChars << std::endl;
+    std::cout << "Different characters: " << freqTable.size() << std::endl;
+    std::cout << std::fixed << std::setprecision(4);
+    std::cout << "Shannon entropy H: " << entropy
+              << " bits/character" << std::endl;
+    std::cout << "Average code length L: " << averageCodeLength
+              << " bits/character" << std::endl;
+    std::cout << std::setprecision(2);
+    std::cout << "Coding efficiency: " << efficiency << "%" << std::endl;
+    std::cout << "Redundancy: " << redundancy << "%" << std::endl;
 }
