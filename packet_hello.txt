@@ -1,0 +1,18 @@
+===== HUFFMAN PACKET =====
+OriginalLength: 13
+EncodedLength: 43
+
+[CodeTable]
+[space] 1 0110
+a 1 0111
+e 1 1110
+f 2 100
+h 2 101
+l 2 00
+m 1 1111
+n 1 1100
+o 1 1101
+u 1 010
+
+[EncodedData]
+1011110000011010110101010100100111101111100
